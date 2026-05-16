@@ -1,1 +1,0 @@
-// TODO: Group mongoose model

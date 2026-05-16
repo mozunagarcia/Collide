@@ -1,1 +1,0 @@
-// TODO: Rating mongoose model

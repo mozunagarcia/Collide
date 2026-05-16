@@ -1,1 +1,0 @@
-// TODO: ratings routes

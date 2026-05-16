@@ -1,1 +1,0 @@
-// TODO: Swipe mongoose model

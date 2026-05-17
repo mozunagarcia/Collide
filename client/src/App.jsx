@@ -1,11 +1,30 @@
-// TODO: Set up React Router routes for all pages
-// Pages to route: Login, Register, Swipe, Profile, Matches, Chat, GroupSpace, Admin
+import { useState } from "react";
+import LoginForm from "./components/auth/LoginForm";
+import RegisterForm from "./components/auth/RegisterForm";
 
 function App() {
+  const [page, setPage] = useState("login");
+
+  let currentPage;
+
+  if (page === "login") {
+    currentPage = <LoginForm setPage={setPage} />;
+  } else {
+    currentPage = <RegisterForm setPage={setPage} />;
+  }
+
   return (
-    <div>
-      <h1>Collide</h1>
-    </div>
+    <main className="auth-page">
+      <section className="auth-card">
+      <div className="auth-image">
+        <h1 className="welcome-title">Welcome</h1>
+        <p className="welcome-text">Find your group ahead...</p>
+      </div>
+        <div className="auth-form-box">
+          {currentPage}
+        </div>
+      </section>
+    </main>
   );
 }
 

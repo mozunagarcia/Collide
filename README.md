@@ -39,11 +39,3 @@ npm run dev
 - Frontend runs on: http://localhost:5173
 - Backend runs on: http://localhost:5000
 
-## Branch Convention
-```
-main        — stable, working code only
-dev         — merge here first before main
-feat/A-...  — Person A (Frontend)
-feat/B-...  — Person B (Backend)
-feat/C-...  — Person C (Server/Bridge)
-```

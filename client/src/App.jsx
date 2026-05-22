@@ -32,10 +32,10 @@
 
 
 
-// import Swipe from "./pages/Swipe";
+import Profile from "./pages/Profile";
 
-// function App() {
-//   return <Swipe />;
-// }
+function App() {
+  return <Profile />;
+}
 
-// export default App;
+export default App;

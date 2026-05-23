@@ -5,8 +5,18 @@ const { signToken } = require("../utils/token");
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, signUpCode } = req.body;
-    //check all fields are filled in
+    const { 
+      name,
+      email,
+      password,
+      signUpCode,
+      major,
+      year,
+      bio,
+      skillTags,
+      workingStyle,
+      groupSizePreference
+    } = req.body;//check all fields are filled in
     if (!name || !email || !password || !signUpCode) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -33,7 +43,13 @@ const register = async (req, res) => {
       name,
       email,
       password: hashed,
-      courses: [course._id],
+      major,
+      year,
+      bio,
+      skillTags,
+      workingStyle,
+      groupSizePreference,
+      courses: [course._id]
     });
 
     //send back a token so user gets logged in right away

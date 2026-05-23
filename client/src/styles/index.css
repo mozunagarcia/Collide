@@ -21,7 +21,6 @@ body{
   max-width:1150px;
   min-height:650px;
   display:grid;
-  grid-template-columns:1fr 1fr;
   border-radius:28px;
   background:rgba(230,240,255,0.35);
   border:1px solid rgba(255,255,255,0.55);
@@ -34,6 +33,21 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+}
+.welcome-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+
+.welcome-title{
+  font-size:72px;
+  margin-bottom:14px;
+}
+
+.welcome-text{
+  font-size:22px;
 }
 .image-box{
   width:100%;
@@ -287,9 +301,7 @@ body{
   box-shadow:0px 10px 22px rgba(120,90,230,0.35);
 }
 @media(max-width:900px){
-  .auth-card{
-    grid-template-columns:1fr;
-  }
+
   .auth-image{
     display:none;
   }
@@ -601,4 +613,72 @@ body{
   .message-bubble{
     max-width:90%;
   }
+}
+.top-demo-buttons{
+  position:absolute;
+  top:30px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:14px;
+  z-index:10;
+}
+
+.auth-form-box-full{
+  width:100%;
+}
+
+.page-card{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.swipe-card{
+  width:100%;
+  max-width:430px;
+  transition:transform 0.18s ease;
+  cursor:grab;
+  user-select:none;
+  position:relative;
+}
+
+.swipe-card:active{
+  cursor:grabbing;
+}
+
+.swipe-left{
+  transform:translateX(-650px) rotate(-22deg) !important;
+}
+
+.swipe-right{
+  transform:translateX(650px) rotate(22deg) !important;
+}
+
+.swipe-label{
+  position:absolute;
+  top:28px;
+  padding:10px 20px;
+  border-radius:14px;
+  font-size:26px;
+  font-weight:bold;
+  letter-spacing:2px;
+  z-index:20;
+  backdrop-filter:blur(10px);
+}
+
+.match-label{
+  right:20px;
+  background:rgba(70,220,120,0.2);
+  border:3px solid rgb(11, 149, 57);
+  color:rgb(11, 149, 57);
+  transform:rotate(12deg);
+}
+
+.pass-label{
+  left:20px;
+  background:rgba(255,70,70,0.2);
+  border:3px solid rgb(255,70,70);
+  color:rgb(255,70,70);
+  transform:rotate(-12deg);
 }

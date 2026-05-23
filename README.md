@@ -4,7 +4,7 @@ Group matching platform for UC Riverside students. Students register with their 
 
 ## Demo Video
 
-[![Watch the demo]([https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID](https://youtu.be/R5SqMZJTD9I?si=g28Zy8kMJDpAdAdk))
+https://www.youtube.com/watch?v=R5SqMZJTD9I
 
 ## Stack
 

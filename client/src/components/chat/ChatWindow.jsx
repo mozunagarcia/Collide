@@ -1,32 +1,27 @@
+import { useState } from "react";
 import MessageBubble from "./MessageBubble";
+import useChat from "../../hooks/useChat";
 
 function ChatWindow() {
-  const messages = [
-    {
-      id: 1,
-      sender: "collider",
-      text: "Heyyyy, r u looking for a groupmate?",
-      time: "1:24 PM"
-    },
-    {
-      id: 2,
-      sender: "me",
-      text: "Yes! Sorry but i need to tell you that I am a bit strict with deadlines",
-      time: "10:25 AM"
-    },
-    {
-      id: 3,
-      sender: "collider",
-      text: "Same i like that",
-      time: "10:26 AM"
-    },
-    {
-      id: 4,
-      sender: "me",
-      text: "Okay, we can make a group space.",
-      time: "10:27 AM"
+  const [newMessage, setNewMessage] = useState("");
+  const { messages, sendMessage } = useChat();
+
+  function handleSend() {
+    if (newMessage.trim() === "") {
+      return;
+    } else {
+      sendMessage(newMessage);
+      setNewMessage("");
     }
-  ];
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === "Enter") {
+      handleSend();
+    } else {
+      return;
+    }
+  }
 
   return (
     <section className="chat-window">
@@ -89,9 +84,16 @@ function ChatWindow() {
             className="chat-input"
             type="text"
             placeholder="Type a message..."
+            value={newMessage}
+            onChange={(event) => setNewMessage(event.target.value)}
+            onKeyDown={handleKeyDown}
           />
 
-          <button className="chat-send-button">
+          <button
+            className="chat-send-button"
+            type="button"
+            onClick={handleSend}
+          >
             Send
           </button>
         </div>

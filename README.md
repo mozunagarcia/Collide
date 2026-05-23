@@ -2,6 +2,10 @@
 
 Group matching platform for UC Riverside students. Students register with their UCR email and a course-specific sign-up code, build a profile with their major, skills, and working style, and swipe through other enrolled students in the same class. Mutual right-swipes create a match, opening a chat thread and eventually a Group Space. A post-project reputation system lets students rate past collaborators.
 
+## Demo Video
+
+[![Watch the demo]([https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID](https://youtu.be/R5SqMZJTD9I?si=g28Zy8kMJDpAdAdk))
+
 ## Stack
 
 - **Frontend:** React (Vite) + Plain CSS + React Router

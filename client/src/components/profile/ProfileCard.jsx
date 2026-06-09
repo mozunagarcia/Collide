@@ -1,9 +1,13 @@
 function ProfileCard({ student }) {
+  const courseList = student.courses
+    ?.map((c) => `${c.department} ${c.number}`)
+    .join(", ");
+
   return (
     <section className="profile-card">
       <div className="profile-header">
         <div className="profile-avatar">
-          {student.name.charAt(0)}
+          {student.name?.charAt(0)}
         </div>
 
         <div>
@@ -12,21 +16,22 @@ function ProfileCard({ student }) {
         </div>
       </div>
 
-      <p className="profile-bio">{student.bio}</p>
+      {student.bio && <p className="profile-bio">{student.bio}</p>}
 
       <div className="profile-info">
-        <p>Year: {student.year}</p>
-        <p>Course: {student.course}</p>
-        <p>Match: {student.matchPercent}%</p>
+        {student.year && <p>Year: {student.year}</p>}
+        {courseList && <p>Course: {courseList}</p>}
       </div>
 
-      <div className="profile-tags">
-        {student.skills.map((skill) => (
-          <span className="profile-tag" key={skill}>
-            {skill}
-          </span>
-        ))}
-      </div>
+      {student.skillTags?.length > 0 && (
+        <div className="profile-tags">
+          {student.skillTags.map((skill) => (
+            <span className="profile-tag" key={skill}>
+              {skill}
+            </span>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

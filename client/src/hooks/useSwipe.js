@@ -1,37 +1,46 @@
 import { useState } from "react";
+import api from "../utils/api";
 
-function useSwipe(students) {
+function useSwipe(candidates) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [matches, setMatches] = useState([]);
   const [swipeClass, setSwipeClass] = useState("");
+  const [match, setMatch] = useState(null);
 
-  const currentStudent = students[currentIndex];
+  const currentStudent = candidates[currentIndex];
 
-  function moveToNextStudent() {
+  function moveToNext() {
     setTimeout(() => {
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex((i) => i + 1);
       setSwipeClass("");
     }, 350);
   }
 
-  function handlePass() {
+  async function handlePass() {
     setSwipeClass("swipe-left");
-    moveToNextStudent();
+    try {
+      await api.post("/swipe", { swipedUserId: currentStudent._id, direction: "pass" });
+    } catch (err) {
+      console.error("Swipe error:", err);
+    }
+    moveToNext();
   }
 
-  function handleLike() {
+  async function handleLike() {
     setSwipeClass("swipe-right");
-    setMatches([...matches, currentStudent]);
-    moveToNextStudent();
+    try {
+      const res = await api.post("/swipe", { swipedUserId: currentStudent._id, direction: "like" });
+      if (res.data.match) setMatch(res.data.match);
+    } catch (err) {
+      console.error("Swipe error:", err);
+    }
+    moveToNext();
   }
 
-  return {
-    currentStudent,
-    matches,
-    swipeClass,
-    handlePass,
-    handleLike
-  };
+  function dismissMatch() {
+    setMatch(null);
+  }
+
+  return { currentStudent, swipeClass, handlePass, handleLike, match, dismissMatch };
 }
 
 export default useSwipe;

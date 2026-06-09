@@ -1,20 +1,41 @@
+import { useEffect, useState } from "react";
 import ProfileCard from "../components/profile/ProfileCard";
+import api from "../utils/api";
 
 function Profile() {
-  const student = {
-    name: "Mel Quant",
-    major: "Computer Science",
-    year: "3rd Year",
-    course: "CS170",
-    matchPercent: 92,
-    bio: "Looking for someone who is understanding",
-    skills: [
-      "React",
-      "Python",
-      "UI/UX",
-      "MongoDB"
-    ]
-  };
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get("/users/me")
+      .then((res) => setUser(res.data))
+      .catch((err) => console.error("Failed to fetch profile:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="auth-page">
+        <p className="form-subtitle">Loading...</p>
+      </main>
+    );
+  }
+
+  if (!user) {
+    return (
+      <main className="auth-page">
+        <p className="form-subtitle">Could not load profile.</p>
+      </main>
+    );
+  }
+
+  const preferences = [
+    user.workingStyle?.location,
+    user.workingStyle?.pace,
+    user.workingStyle?.hours,
+    user.workingStyle?.communicationStyle,
+    user.groupSizePreference,
+  ].filter(Boolean);
 
   return (
     <main className="auth-page">
@@ -22,62 +43,41 @@ function Profile() {
         <div className="profile-sidebar">
           <div className="profile-sidebar-card">
             <div className="profile-sidebar-avatar">
-              M
+              {user.name?.charAt(0)}
             </div>
 
-            <h2 className="profile-sidebar-name">
-              Mel Quant
-            </h2>
+            <h2 className="profile-sidebar-name">{user.name}</h2>
 
-            <p className="profile-sidebar-major">
-              Computer Science
-            </p>
+            <p className="profile-sidebar-major">{user.major}</p>
 
-            <button className="profile-edit-button">
-              Edit Profile
-            </button>
+            <button className="profile-edit-button">Edit Profile</button>
           </div>
         </div>
 
         <div className="profile-main">
-          <ProfileCard student={student} />
+          <ProfileCard student={user} />
+
+          {preferences.length > 0 && (
+            <section className="profile-section">
+              <h2 className="profile-section-title">Working Preferences</h2>
+              <div className="profile-preferences">
+                {preferences.map((pref) => (
+                  <div className="profile-preference-card" key={pref}>
+                    {pref}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section className="profile-section">
-            <h2 className="profile-section-title">
-              Working Preferences
-            </h2>
-
-            <div className="profile-preferences">
-              <div className="profile-preference-card">
-                Remote Friendly
-              </div>
-
-              <div className="profile-preference-card">
-                Night Study Sessions
-              </div>
-
-              <div className="profile-preference-card">
-                Finish Early
-              </div>
-
-              <div className="profile-preference-card">
-                Weekly Meetings
-              </div>
-            </div>
-          </section>
-
-          <section className="profile-section">
-            <h2 className="profile-section-title">
-              Reputation
-            </h2>
-
+            <h2 className="profile-section-title">Reputation</h2>
             <div className="reputation-card">
               <h1 className="reputation-score">
-                4.8
+                {user.averageRating > 0 ? user.averageRating.toFixed(1) : "—"}
               </h1>
-
               <p className="reputation-text">
-                Top Rated Collaborator
+                {user.ratingCount > 0 ? `${user.ratingCount} rating${user.ratingCount !== 1 ? "s" : ""}` : "No ratings yet"}
               </p>
             </div>
           </section>

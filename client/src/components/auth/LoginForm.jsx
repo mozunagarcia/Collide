@@ -1,19 +1,27 @@
 import { useState } from "react";
+import api from "../../utils/api";
+import useAuth from "../../hooks/useAuth";
 
 function LoginForm({ setPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
+    setError("");
+    setLoading(true);
 
-    if (
-      email === "test@ucr.edu" &&
-      password === "1234"
-    ) {
+    try {
+      const response = await api.post("/auth/login", { email, password });
+      login(response.data.user, response.data.token);
       setPage("swipe");
-    } else {
-      alert("Invalid login");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -48,8 +56,10 @@ function LoginForm({ setPage }) {
         />
       </label>
 
-      <button className="main-button" type="submit">
-        Login
+      {error && <p className="error-text">{error}</p>}
+
+      <button className="main-button" type="submit" disabled={loading}>
+        {loading ? "Logging in..." : "Login"}
       </button>
 
       <div className="form-links">

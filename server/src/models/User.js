@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema(
       enum: ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"],
     },
     bio: { type: String, maxlength: 500 },
+    pronouns: {
+      type: String,
+      enum: ["she/her", "he/him", "they/them", "Unlisted", "Do not display"],
+    },
+    customPronouns: { type: String, trim: true },
     profilePhoto: { type: String },
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     skillTags: [{ type: String, trim: true }],

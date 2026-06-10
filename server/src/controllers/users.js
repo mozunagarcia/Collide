@@ -14,11 +14,11 @@ const getMe = async (req, res) => {
 
 const updateMe = async (req, res) => {
   try {
-    const { name, major, year, bio, skillTags, workingStyle, groupSizePreference } = req.body;
+    const { name, major, year, bio, pronouns, customPronouns, skillTags, workingStyle, groupSizePreference } = req.body;
 
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { name, major, year, bio, skillTags, workingStyle, groupSizePreference },
+      { name, major, year, bio, pronouns, customPronouns, skillTags, workingStyle, groupSizePreference },
       { new: true, runValidators: true }
     )
       .select("-password")

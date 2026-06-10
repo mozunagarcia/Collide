@@ -682,3 +682,89 @@ body{
   color:rgb(255,70,70);
   transform:rotate(-12deg);
 }
+.profile-edit-form{
+  max-width:760px;
+}
+.profile-edit-page{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+.profile-photo-editor{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-bottom:20px;
+}
+.profile-photo-preview{
+  width:105px;
+  height:105px;
+  border-radius:28px;
+  background:linear-gradient(135deg,rgb(255,120,190),rgb(125,145,250));
+  color:rgb(255,255,255);
+  font-size:42px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border:3px solid rgba(255,255,255,0.7);
+  box-shadow:0px 10px 24px rgba(120,90,230,0.35);
+}
+.profile-photo-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.photo-upload-button{
+  background:rgba(255,255,255,0.65);
+  color:rgb(45,65,160);
+  border:1px solid rgba(255,255,255,0.7);
+  border-radius:18px;
+  padding:12px 18px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0px 10px 22px rgba(80,100,180,0.18);
+}
+.photo-upload-input{
+  display:none;
+}
+.textarea-field{
+  min-height:95px;
+  resize:vertical;
+}
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+.skill-checkbox{
+  background:rgba(255,255,255,0.55);
+  border:1px solid rgba(255,255,255,0.7);
+  border-radius:16px;
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:rgb(45,65,160);
+  font-size:14px;
+  font-weight:bold;
+}
+.skill-checkbox input{
+  accent-color:rgb(255,110,175);
+}
+.profile-pronouns{
+  color:rgb(90,105,180);
+  margin-top:4px;
+}
+@media(max-width:900px){
+  .skills-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:560px){
+  .skills-grid{
+    grid-template-columns:1fr;
+  }
+}

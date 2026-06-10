@@ -5,17 +5,26 @@ const User = require("../models/User");
 const getCandidates = async (req, res) => {
   try {
     const currentUser = req.user;
+    const { courseId } = req.query;
 
-    if (!currentUser.courses.length) {
-      return res.json([]);
+    if (!courseId) {
+      return res.status(400).json({ message: "courseId query parameter is required" });
     }
 
-    const alreadySwiped = await Swipe.find({ swiper: currentUser._id }).select("swiped");
+    const isEnrolled = currentUser.courses.some((c) => c.toString() === courseId);
+    if (!isEnrolled) {
+      return res.status(403).json({ message: "You are not enrolled in this course" });
+    }
+
+    const alreadySwiped = await Swipe.find({
+      swiper: currentUser._id,
+      course: courseId,
+    }).select("swiped");
     const swipedIds = alreadySwiped.map((s) => s.swiped);
 
     const candidates = await User.find({
       _id: { $nin: [...swipedIds, currentUser._id] },
-      courses: { $in: currentUser.courses },
+      courses: courseId,
     })
       .select("-password")
       .populate("courses", "department number name quarter");

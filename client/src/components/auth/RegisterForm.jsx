@@ -67,6 +67,41 @@ function RegisterForm({ setPage }) {
     }
   }
 
+  async function handleRegister(event) {
+    event.preventDefault();
+    setError("");
+
+    if (!emailValid) {
+      setError("Please enter a valid UCR email");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await api.post("/auth/register", {
+        name,
+        email,
+        password,
+        signUpCode,
+        major,
+        year,
+      });
+
+      login(response.data.user, response.data.token);
+      setPage("swipe");
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <form className="form" onSubmit={handleRegister}>
       <div className="form-header">
@@ -77,6 +112,13 @@ function RegisterForm({ setPage }) {
       <div className="input-row">
         <label className="input-group">
           <span className="input-label">Full Name</span>
+          <input
+            className="input-field"
+            type="text"
+            placeholder="Your name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
           <input
             className="input-field"
             type="text"

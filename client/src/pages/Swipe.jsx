@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
 import SwipeCard from "../components/swipe/SwipeCard";
 import useSwipe from "../hooks/useSwipe";
+import useAuth from "../hooks/useAuth";
 import api from "../utils/api";
 
 function Swipe() {
+  const { user } = useAuth();
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/swipe/candidates")
+    const courseId = user?.courses?.[0];
+    if (!courseId) {
+      setLoading(false);
+      return;
+    }
+    api.get(`/swipe/candidates?courseId=${courseId}`)
       .then((res) => setCandidates(res.data))
       .catch((err) => console.error("Failed to fetch candidates:", err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [user]);
 
   const { currentStudent, swipeClass, handlePass, handleLike, match, dismissMatch } = useSwipe(candidates);
 

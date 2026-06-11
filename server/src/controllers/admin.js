@@ -1,6 +1,8 @@
 const crypto = require("crypto");
 const Course = require("../models/Course");
 const User = require("../models/User");
+const Match = require("../models/Match");
+const Group = require("../models/Group");
 
 const createCourse = async (req, res) => {
   try {
@@ -85,4 +87,56 @@ const bootstrapAdmin = async (req, res) => {
   }
 };
 
-module.exports = { createCourse, getCourses, deleteCourse, getUsers, bootstrapAdmin };
+const getAnalytics = async (req, res) => {
+  try {
+    // Match rate
+    const totalUsers = await User.countDocuments();
+    const matchedUserIds = await Match.distinct("users");
+    const matchedUserCount = matchedUserIds.length;
+    const matchRatePercent = totalUsers > 0 ? Math.round((matchedUserCount / totalUsers) * 100) : 0;
+
+    // Group size — average and distribution
+    const groupSizeStats = await Group.aggregate([
+      { $project: { size: { $size: "$members" } } },
+      {
+        $group: {
+          _id: null,
+          avgSize: { $avg: "$size" },
+          totalGroups: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const groupSizeDistribution = await Group.aggregate([
+      { $project: { size: { $size: "$members" } } },
+      { $group: { _id: "$size", count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]);
+
+    // Major breakdown
+    const majorBreakdown = await User.aggregate([
+      { $match: { major: { $exists: true, $ne: "" } } },
+      { $group: { _id: "$major", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+    ]);
+
+    res.json({
+      matchRate: {
+        totalUsers,
+        matchedUsers: matchedUserCount,
+        percentage: matchRatePercent,
+      },
+      groupSize: {
+        totalGroups: groupSizeStats[0]?.totalGroups || 0,
+        averageSize: groupSizeStats[0] ? Math.round(groupSizeStats[0].avgSize * 10) / 10 : 0,
+        distribution: groupSizeDistribution,
+      },
+      majorBreakdown,
+    });
+  } catch (err) {
+    console.error("getAnalytics error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { createCourse, getCourses, deleteCourse, getUsers, bootstrapAdmin, getAnalytics };

@@ -1,1 +1,8 @@
-// TODO: socket.io-client instance
+import { io } from "socket.io-client";
+
+const socket = io(import.meta.env.VITE_API_URL || "http://localhost:5000", {
+  auth: { token: localStorage.getItem("token") },
+  autoConnect: false,
+});
+
+export default socket;

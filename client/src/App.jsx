@@ -1,12 +1,20 @@
-import {useState} from "react";
+import { useState, useContext } from "react";
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import Swipe from "./pages/Swipe";
+import Matches from "./pages/Matches";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  const [page, setPage] = useState("login");
+  const { user, logout } = useContext(AuthContext);
+  const [page, setPage] = useState(() => {
+    const token = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
+    return token && savedUser ? "swipe" : "login";
+  });
+  const [chatMatchId, setChatMatchId] = useState(null);
 
   let currentPage;
 
@@ -26,9 +34,13 @@ function App() {
     currentPage = (
       <Profile setPage={setPage} />
     );
+  } else if (page === "matches") {
+    currentPage = (
+      <Matches setPage={setPage} setChatMatchId={setChatMatchId} />
+    );
   } else if (page === "chat") {
     currentPage = (
-      <Chat setPage={setPage} />
+      <Chat setPage={setPage} matchId={chatMatchId} />
     );
   } else {
     currentPage = (
@@ -38,42 +50,15 @@ function App() {
 
 return (
   <main className="auth-page">
-    <div className="top-demo-buttons">
-      <button
-        className="demo-button"
-        onClick={() => setPage("login")}
-      >
-        Login
-      </button>
-
-      <button
-        className="demo-button"
-        onClick={() => setPage("register")}
-      >
-        Register
-      </button>
-
-      <button
-        className="demo-button"
-        onClick={() => setPage("swipe")}
-      >
-        Swipe
-      </button>
-
-      <button
-        className="demo-button"
-        onClick={() => setPage("profile")}
-      >
-        Profile
-      </button>
-
-      <button
-        className="demo-button"
-        onClick={() => setPage("chat")}
-      >
-        Chat
-      </button>
-    </div>
+    {user && page !== "login" && page !== "register" && (
+      <div className="top-demo-buttons">
+        <button className="demo-button" onClick={() => setPage("swipe")}>Swipe</button>
+        <button className="demo-button" onClick={() => setPage("matches")}>Matches</button>
+        <button className="demo-button" onClick={() => setPage("profile")}>Profile</button>
+        <button className="demo-button" onClick={() => setPage("chat")}>Chat</button>
+        <button className="demo-button demo-button-logout" onClick={() => { logout(); setPage("login"); }}>Log Out</button>
+      </div>
+    )}
 
     <section className="auth-card">
       {(page === "login" || page === "register") && (

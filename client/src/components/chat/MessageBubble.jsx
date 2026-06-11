@@ -1,21 +1,18 @@
-function MessageBubble({ message }) {
-  let bubbleClass;
+function MessageBubble({ message, myId }) {
+  const senderId = message.sender?._id?.toString() || message.sender?.toString();
+  const isMe = senderId === myId;
 
-  if (message.sender === "me") {
-    bubbleClass = "message-bubble message-bubble-me";
-  } else {
-    bubbleClass = "message-bubble message-bubble-other";
-  }
+  const time = message.createdAt
+    ? new Date(message.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : "";
 
   return (
-    <div className={bubbleClass}>
-      <p className="message-text">
-        {message.text}
-      </p>
-
-      <span className="message-time">
-        {message.time}
-      </span>
+    <div className={`message-bubble ${isMe ? "message-bubble-me" : "message-bubble-other"}`}>
+      {!isMe && message.sender?.name && (
+        <span className="message-sender">{message.sender.name}</span>
+      )}
+      <p className="message-text">{message.content}</p>
+      <span className="message-time">{time}</span>
     </div>
   );
 }

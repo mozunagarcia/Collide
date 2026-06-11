@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import api from "../../utils/api";
+import { AuthContext } from "../../context/AuthContext";
 
 function LoginForm({ setPage }) {
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
+    setError("");
 
-    if (
-      email === "test@ucr.edu" &&
-      password === "1234"
-    ) {
+    try {
+      setLoading(true);
+      const { data } = await api.post("/auth/login", { email, password });
+      login(data.user, data.token);
       setPage("swipe");
-    } else {
-      alert("Invalid login");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -26,30 +34,32 @@ function LoginForm({ setPage }) {
 
       <label className="input-group">
         <span className="input-label">Email</span>
-
         <input
           className="input-field"
           type="email"
           placeholder="name@ucr.edu"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
+          required
         />
       </label>
 
       <label className="input-group">
         <span className="input-label">Password</span>
-
         <input
           className="input-field"
           type="password"
           placeholder="Enter password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
+          required
         />
       </label>
 
-      <button className="main-button" type="submit">
-        Login
+      {error && <p className="error-text">{error}</p>}
+
+      <button className="main-button" type="submit" disabled={loading}>
+        {loading ? "Logging in..." : "Login"}
       </button>
 
       <div className="form-links">

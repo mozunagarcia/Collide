@@ -5,7 +5,9 @@ import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import Swipe from "./pages/Swipe";
 import Matches from "./pages/Matches";
+import GroupSpace from "./pages/GroupSpace";
 import { AuthContext } from "./context/AuthContext";
+
 
 function App() {
   const { user, logout } = useContext(AuthContext);
@@ -42,6 +44,10 @@ function App() {
     currentPage = (
       <Chat setPage={setPage} matchId={chatMatchId} />
     );
+    } else if (page === "groupspace") {
+    currentPage = (
+    <GroupSpace setPage={setPage} />
+  );
   } else {
     currentPage = (
       <LoginForm setPage={setPage} />
@@ -56,6 +62,7 @@ return (
         <button className="demo-button" onClick={() => setPage("matches")}>Matches</button>
         <button className="demo-button" onClick={() => setPage("profile")}>Profile</button>
         <button className="demo-button" onClick={() => setPage("chat")}>Chat</button>
+        <button className="demo-button" onClick={() => setPage("groupspace")}>Groupspace</button>
         <button className="demo-button demo-button-logout" onClick={() => { logout(); setPage("login"); }}>Log Out</button>
       </div>
     )}

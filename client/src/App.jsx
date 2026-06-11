@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import Swipe from "./pages/Swipe";
 import Matches from "./pages/Matches";
 import GroupSpace from "./pages/GroupSpace";
+import Admin from "./pages/Admin";
 import { AuthContext } from "./context/AuthContext";
 
 
@@ -47,7 +48,11 @@ function App() {
     } else if (page === "groupspace") {
     currentPage = (
     <GroupSpace setPage={setPage} />
-  );
+     );
+     } else if (page === "admin") {
+      currentPage = (
+        <Admin setPage={setPage} />
+      );
   } else {
     currentPage = (
       <LoginForm setPage={setPage} />
@@ -63,6 +68,9 @@ return (
         <button className="demo-button" onClick={() => setPage("profile")}>Profile</button>
         <button className="demo-button" onClick={() => setPage("chat")}>Chat</button>
         <button className="demo-button" onClick={() => setPage("groupspace")}>Groupspace</button>
+        {user && user.isAdmin && (
+          <button className="demo-button" onClick={() => setPage("admin")}>Admin</button>
+          )}
         <button className="demo-button demo-button-logout" onClick={() => { logout(); setPage("login"); }}>Log Out</button>
       </div>
     )}

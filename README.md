@@ -159,5 +159,5 @@ curl -X POST http://localhost:5000/api/admin/bootstrap \
 | Name | Role |
 |---|---|
 | Mari Ozuna Garcia | Backend — Mongoose schemas, auth endpoints, JWT, admin API |
-| Courtney Songco | Frontend — React pages, swipe UI, chat UI, auth forms |
-| Abby Allers | Server — Express setup, Socket.io, deployment, API wiring, GroupSpace, Admin Dashboard |
+| Courtney Songco | Frontend — React pages, swipe UI, chat UI, auth forms, GroupSpace, Admin Dashboard|
+| Abby Allers | Server — Express setup, Socket.io, deployment, API wiring |

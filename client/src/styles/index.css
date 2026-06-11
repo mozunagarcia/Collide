@@ -1035,3 +1035,217 @@ body{
   margin-top:4px;
   line-height:1.4;
 }
+/*For groupspace*/
+.groupspace-page {
+  width: 100%;
+  color: rgb(35,45,95);
+}
+.groupspace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.groupspace-header h1 {
+  margin: 0;
+  color: rgb(45,65,160);
+  font-size: 34px;
+}
+.groupspace-header p {
+  margin: 6px 0 0;
+  color: rgb(90,105,180);
+}
+.groupspace-message {
+  background: rgba(230,240,255,0.9);
+  border: 1px solid rgba(150,180,255,0.7);
+  color: rgb(45,65,160);
+  padding: 12px 16px;
+  border-radius: 16px;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+.groupspace-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 20px;
+}
+.groupspace-left,
+.groupspace-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.groupspace-section {
+  background: rgba(255,255,255,0.42);
+  border: 1px solid rgba(255,255,255,0.65);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0px 8px 24px rgba(80,70,160,0.12);
+  backdrop-filter: blur(12px);
+}
+.groupspace-section h2 {
+  margin: 0 0 16px;
+  color: rgb(45,65,160);
+}
+.groupspace-form,
+.groupspace-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.groupspace-form input,
+.groupspace-form select,
+.groupspace-form textarea,
+.groupspace-edit-form input,
+.groupspace-edit-form select,
+.groupspace-edit-form textarea {
+  width: 100%;
+  border: 1px solid rgba(145,165,240,0.6);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.85);
+  color: rgb(35,45,95);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+.groupspace-form textarea,
+.groupspace-edit-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+.groupspace-form button,
+.groupspace-edit-form button,
+.groupspace-card-actions button {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg,rgb(70,110,230),rgb(140,120,245));
+  color: rgb(255,255,255);
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.groupspace-form button:hover,
+.groupspace-edit-form button:hover,
+.groupspace-card-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 18px rgba(70,90,180,0.22);
+}
+.groupspace-card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+  gap: 16px;
+}
+.groupspace-small-card,
+.groupspace-group-card,
+.groupspace-detail-card {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0px 8px 20px rgba(80,70,160,0.1);
+}
+.groupspace-small-card h3,
+.groupspace-group-card h3,
+.groupspace-detail-card h3 {
+  margin: 0 0 8px;
+  color: rgb(45,65,160);
+}
+.groupspace-small-card p,
+.groupspace-group-card p,
+.groupspace-detail-card p {
+  margin: 5px 0;
+  color: rgb(90,105,180);
+  font-size: 14px;
+}
+.groupspace-group-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+.groupspace-group-id {
+  font-size: 12px !important;
+  word-break: break-all;
+  color: rgb(120,130,180) !important;
+}
+.groupspace-card-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.groupspace-danger-button {
+  background: linear-gradient(90deg,rgb(210,70,90),rgb(245,120,140)) !important;
+}
+.groupspace-empty {
+  color: rgb(90,105,180);
+  margin: 0;
+}
+.groupspace-detail-section {
+  margin-top: 20px;
+}
+.groupspace-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+}
+.groupspace-members {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+.groupspace-member {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 16px;
+}
+.groupspace-member-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg,rgb(255,120,190),rgb(125,145,250));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(255,255,255);
+  font-weight: bold;
+}
+.groupspace-member p {
+  margin: 0;
+  color: rgb(45,65,160);
+  font-weight: bold;
+}
+.groupspace-member span {
+  color: rgb(90,105,180);
+  font-size: 13px;
+}
+.groupspace-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+.groupspace-links a {
+  color: rgb(70,90,210);
+  word-break: break-all;
+  font-weight: 600;
+}
+.groupspace-note {
+  margin: 0;
+  color: rgb(120,120,160);
+  font-size: 13px;
+}
+@media (max-width: 950px) {
+  .groupspace-layout,
+  .groupspace-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .groupspace-card-list {
+    grid-template-columns: 1fr;
+  }
+}

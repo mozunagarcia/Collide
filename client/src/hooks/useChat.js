@@ -1,48 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import socket from "../utils/socket";
 
-function useChat() {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      sender: "collider",
-      text: "Hii, i am looking for a group in CS110, Can I still join your group?",
-      time: "1:24 PM"
-    },
-    {
-      id: 2,
-      sender: "me",
-      text: "Yes! I do have to be honest... we do work a bit fast-paced",
-      time: "1:30 PM"
-    },
-    {
-      id: 3,
-      sender: "collider",
-      text: "Sameeeee. I think we will be a good fit.",
-      time: "1:31 PM"
-    },
-        {
-      id: 4,
-      sender: "me",
-      text: "Ok, I'll collide with you.",
-      time: "1:34 PM"
-    },
-  ]);
+function useChat(matchId) {
+  const [messages, setMessages] = useState([]);
+  const prevMatchId = useRef(null);
 
-  function sendMessage(text) {
-    const newMessage = {
-      id: messages.length + 1,
-      sender: "me",
-      text: text,
-      time: "Now"
+  useEffect(() => {
+    if (!matchId) return;
+
+    // Leave previous room before joining new one
+    if (prevMatchId.current && prevMatchId.current !== matchId) {
+      socket.emit("leave_match", { matchId: prevMatchId.current });
+    }
+    prevMatchId.current = matchId;
+
+    if (!socket.connected) {
+      socket.auth = { token: localStorage.getItem("token") };
+      socket.connect();
+    }
+
+    setMessages([]);
+    socket.emit("join_match", { matchId });
+
+    function onHistory(history) {
+      setMessages(history);
+    }
+
+    function onMessage(message) {
+      setMessages((prev) => [...prev, message]);
+    }
+
+    socket.on("message_history", onHistory);
+    socket.on("receive_message", onMessage);
+
+    return () => {
+      socket.off("message_history", onHistory);
+      socket.off("receive_message", onMessage);
     };
+  }, [matchId]);
 
-    setMessages([...messages, newMessage]);
+  useEffect(() => {
+    return () => {
+      socket.disconnect();
+      prevMatchId.current = null;
+    };
+  }, []);
+
+  function sendMessage(content) {
+    if (!content?.trim() || !matchId) return;
+    socket.emit("send_message", { matchId, content });
   }
 
-  return {
-    messages,
-    sendMessage
-  };
+  return { messages, sendMessage };
 }
 
 export default useChat;

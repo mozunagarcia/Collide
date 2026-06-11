@@ -3,7 +3,10 @@ function ProfileCard({ student }) {
     <section className="profile-card">
       <div className="profile-header">
         <div className="profile-avatar">
-          {student.name.charAt(0)}
+          {student.profilePhoto
+            ? <img src={student.profilePhoto} alt={student.name} style={{ width:"100%", height:"100%", objectFit:"cover", borderRadius:"18px" }} />
+            : student.name.charAt(0)
+          }
         </div>
 
         <div>
@@ -17,7 +20,6 @@ function ProfileCard({ student }) {
       <div className="profile-info">
         <p>Year: {student.year}</p>
         <p>Course: {student.course}</p>
-        <p>Match: {student.matchPercent}%</p>
       </div>
 
       <div className="profile-tags">

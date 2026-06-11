@@ -12,7 +12,6 @@ const matchSchema = new mongoose.Schema(
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
-      required: true,
     },
     group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" },
     status: {

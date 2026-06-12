@@ -47,6 +47,9 @@ const userSchema = new mongoose.Schema(
     averageRating: { type: Number, default: 0, min: 0, max: 5 },
     ratingCount: { type: Number, default: 0 },
     isAdmin: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false },
+    emailVerificationToken: { type: String },
+    emailVerificationExpires: { type: Date },
   },
   { timestamps: true }
 );

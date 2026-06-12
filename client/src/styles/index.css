@@ -1406,3 +1406,8 @@ body{
     grid-template-columns: 1fr;
   }
 }
+.success-text {
+  color: #15803d;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}

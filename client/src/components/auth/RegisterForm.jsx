@@ -1,9 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import api from "../../utils/api";
-import { AuthContext } from "../../context/AuthContext";
 
 function RegisterForm({ setPage }) {
-  const { login } = useContext(AuthContext);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -13,7 +11,9 @@ function RegisterForm({ setPage }) {
     password: "",
     confirmPassword: "",
   });
+
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const emailValid = form.email.endsWith("@ucr.edu");
@@ -31,12 +31,19 @@ function RegisterForm({ setPage }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
-    if (!emailValid) return setError("Please enter a valid UCR email");
-    if (form.password !== form.confirmPassword) return setError("Passwords do not match");
+    if (!emailValid) {
+      return setError("Please enter a valid UCR email");
+    }
+
+    if (form.password !== form.confirmPassword) {
+      return setError("Passwords do not match");
+    }
 
     try {
       setLoading(true);
+
       const { data } = await api.post("/auth/register", {
         name: form.name,
         email: form.email,
@@ -45,8 +52,18 @@ function RegisterForm({ setPage }) {
         signUpCode: form.signUpCode,
         password: form.password,
       });
-      login(data.user, data.token);
-      setPage("swipe");
+
+      setSuccess(data.message);
+
+      setForm({
+        name: "",
+        email: "",
+        major: "",
+        year: "",
+        signUpCode: "",
+        password: "",
+        confirmPassword: "",
+      });
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
@@ -169,6 +186,7 @@ function RegisterForm({ setPage }) {
       </label>
 
       {error && <p className="error-text">{error}</p>}
+      {success && <p className="success-text">{success}</p>}
 
       <button className="main-button" type="submit" disabled={loading}>
         {loading ? "Creating account..." : "Create Account"}

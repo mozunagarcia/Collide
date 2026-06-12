@@ -1,20 +1,29 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const http = require("http");
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
+const session = require("express-session");
+const passport = require("./config/passport");
 const { Server } = require("socket.io");
 const connectDB = require("./config/db");
 const { verifyToken } = require("./utils/token");
 const User = require("./models/User");
 const Match = require("./models/Match");
 const Message = require("./models/Message");
-
-dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors({ origin: process.env.CLIENT_URL }));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get("/", (req, res) => res.json({ message: "Collide API running" }));
 

@@ -18,7 +18,11 @@ const register = async (req, res) => {
       groupSizePreference
     } = req.body;//check all fields are filled in
     if (!name || !email || !password || !signUpCode) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: "Name, email, password, and sign-up code are required" });
+    }
+
+    if (!/^[a-zA-Z0-9._%+-]+@ucr\.edu$/.test(email)) {
+      return res.status(400).json({ message: "Must be a valid UCR email address" });
     }
 
     // Verify sign-up code matches a real course section
@@ -87,10 +91,14 @@ const login = async (req, res) => {
         .json({ message: "Email and password are required" });
     }
 
-    //find account with that email
     const user = await User.findOne({ email });
-    //check the password matches what was saved
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    if (!user.password) {
+      return res.status(401).json({ message: "This account uses Google sign-in. Please log in with Google." });
+    }
+    if (!(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 

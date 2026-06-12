@@ -172,16 +172,18 @@ function GroupSpace() {
     e.preventDefault();
 
     if (!joinGroupId.trim()) {
-      setMessage("Please enter a group ID.");
+      setMessage("Please enter a join code.");
       return;
     }
 
     try {
-      await api.post(`/groups/${joinGroupId}/join`);
+      await api.post("/groups/join", { joinCode: joinGroupId.trim() });
       setMessage("Joined group successfully.");
       setJoinGroupId("");
       loadGroupSpaceData();
     } catch (err) {
+      console.error("Join error status:", err.response?.status);
+      console.error("Join error data:", err.response?.data);
       setMessage(err.response?.data?.message || "Could not join group.");
     }
   }
@@ -322,7 +324,7 @@ function GroupSpace() {
               <input
                 value={joinGroupId}
                 onChange={(e) => setJoinGroupId(e.target.value)}
-                placeholder="Enter group ID"
+                placeholder="Enter group join code (e.g. A1B2C3D4)"
               />
 
               <button type="submit">
@@ -372,7 +374,7 @@ function GroupSpace() {
                     <p>{formatCourse(group.course)}</p>
                     <p>{formatMembers(group)}</p>
                     <p>Status: {group.status}</p>
-                    <p className="groupspace-group-id">ID: {group._id}</p>
+                    <p className="groupspace-group-id">Join Code: {group.joinCode}</p>
                   </div>
 
                   <div className="groupspace-card-actions">

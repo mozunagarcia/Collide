@@ -205,6 +205,40 @@ body{
   font-size:13px;
   margin-top:6px;
 }
+.divider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:16px 0;
+  color:rgb(100,115,180);
+  font-size:14px;
+}
+.divider::before,.divider::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:rgba(100,120,200,0.3);
+}
+.google-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  padding:13px;
+  border:1px solid rgba(255,255,255,0.6);
+  border-radius:18px;
+  background:rgba(255,255,255,0.75);
+  color:rgb(50,60,120);
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0px 6px 18px rgba(55,70,150,0.15);
+  transition:background 0.2s;
+}
+.google-button:hover{
+  background:rgba(255,255,255,0.92);
+}
 .strength-text{
   color:rgb(80,95,160);
   font-size:13px;

@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 
 const groupSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
+    joinCode: { type: String, unique: true, trim: true },
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
@@ -26,5 +28,12 @@ const groupSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+groupSchema.pre("save", function (next) {
+  if (!this.joinCode) {
+    this.joinCode = crypto.randomBytes(4).toString("hex").toUpperCase();
+  }
+  next();
+});
 
 module.exports = mongoose.model("Group", groupSchema);

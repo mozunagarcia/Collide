@@ -9,9 +9,9 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^[a-zA-Z0-9._%+-]+@ucr\.edu$/, "Must be a valid UCR email address"],
     },
-    password: { type: String, required: true },
+    password: { type: String },
+    googleId: { type: String, sparse: true },
     major: { type: String, trim: true },
     year: {
       type: String,

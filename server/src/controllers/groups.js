@@ -99,23 +99,25 @@ const updateGroup = async (req, res) => {
 
 const joinGroup = async (req, res) => {
   try {
-    const group = await Group.findById(req.params.id);
-    if (!group) {
-      return res.status(404).json({ message: "Group not found" });
+    console.log("joinGroup called, body:", req.body);
+    const { joinCode } = req.body;
+
+    if (!joinCode || !joinCode.trim()) {
+      return res.status(400).json({ message: "Join code is required" });
     }
 
-    const isEnrolled = req.user.courses.some((c) => c.toString() === group.course.toString());
-    if (!isEnrolled) {
-      return res.status(403).json({ message: "You are not enrolled in this course" });
+    const group = await Group.findOne({ joinCode: joinCode.trim().toUpperCase() });
+    if (!group) {
+      return res.status(404).json({ message: "No group found with that join code" });
     }
 
     const alreadyMember = group.members.some((m) => m.toString() === req.user._id.toString());
     if (alreadyMember) {
-      return res.status(409).json({ message: "Already a member of this group" });
+      return res.status(409).json({ message: "You are already a member of this group" });
     }
 
     if (group.members.length >= group.maxSize) {
-      return res.status(400).json({ message: "Group is full" });
+      return res.status(400).json({ message: "This group is full" });
     }
 
     group.members.push(req.user._id);

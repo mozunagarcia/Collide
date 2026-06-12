@@ -6,9 +6,9 @@ const { protect } = require("../middleware/auth");
 router.use(protect);
 router.post("/", createGroup);
 router.get("/mine", getMyGroups);
+router.post("/join", joinGroup);
 router.get("/:id", getGroup);
 router.patch("/:id", updateGroup);
-router.post("/:id/join", joinGroup);
 router.post("/:id/leave", leaveGroup);
 
 module.exports = router;

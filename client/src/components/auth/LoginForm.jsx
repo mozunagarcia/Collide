@@ -86,9 +86,6 @@ function LoginForm({ setPage }) {
           Create an account
         </button>
 
-        <button className="link-button" type="button">
-          Forgot password
-        </button>
       </div>
     </form>
   );

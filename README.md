@@ -12,7 +12,7 @@ https://www.youtube.com/watch?v=R5SqMZJTD9I
 - **Backend:** Node.js + Express
 - **Database:** MongoDB Atlas (Mongoose)
 - **Real-time:** Socket.io (JWT-authenticated)
-- **Auth:** JWT (bcryptjs password hashing)
+- **Auth:** JWT (bcryptjs password hashing) + Google OAuth 2.0 (Passport.js)
 - **File Storage:** Multer + Cloudinary
 
 ## Project Structure
@@ -33,7 +33,7 @@ Collide/
         ├── models/       # Mongoose schemas (User, Course, Match, Group, Message, Swipe)
         ├── middleware/   # JWT auth (protect, isAdmin), Multer upload
         ├── utils/        # Token helpers
-        └── config/       # MongoDB + Cloudinary config
+        └── config/       # MongoDB, Cloudinary, and Passport (Google OAuth) config
 ```
 
 ## API Endpoints
@@ -43,6 +43,8 @@ Collide/
 |--------|------|-------------|
 | POST | `/api/auth/register` | UCR email validation, sign-up code check, bcrypt hash, JWT |
 | POST | `/api/auth/login` | Password comparison, JWT issuance |
+| GET | `/api/auth/google` | Initiate Google OAuth 2.0 login flow |
+| GET | `/api/auth/google/callback` | Google OAuth callback; issues JWT and redirects to `/auth/callback` |
 
 ### Users
 | Method | Path | Description |
@@ -104,7 +106,7 @@ Messages are persisted to MongoDB (`Message` collection) and replayed on reconne
 ## What Is Currently Working
 
 ### Backend
-- Full auth flow: register (UCR email + sign-up code), login, JWT-protected routes
+- Full auth flow: register (UCR email + sign-up code), login, Google OAuth 2.0, JWT-protected routes
 - Profile editing: major, year, bio, skill tags, working style, group size preference
 - Profile photo upload via Multer + Cloudinary
 - Swipe queue (excludes already-swiped users), swipe recording, automatic mutual-match detection
@@ -115,12 +117,13 @@ Messages are persisted to MongoDB (`Message` collection) and replayed on reconne
 - Mongoose models: User, Course, Match, Group, Message, Swipe
 
 ### Frontend
-- Login and Register pages with UCR email enforcement, password strength, sign-up code
+- Login and Register pages with UCR email enforcement, password strength, sign-up code, and "Sign in with Google" button
 - Swipe page with Pass/Like buttons wired to the API
 - Real-time Chat page using Socket.io (join room, send/receive messages)
 - Profile page with edit modal (all profile fields)
 - Matches page listing active matches
 - GroupSpace page: enroll in course, create/join/view/edit/leave groups, shared links, member list
+- `/auth/callback` route handles the Google OAuth redirect and stores the JWT in context
 - Admin Dashboard: analytics stats, create/delete courses, user table, major breakdown, group size distribution
 
 ## Running Locally
@@ -130,7 +133,8 @@ Messages are persisted to MongoDB (`Message` collection) and replayed on reconne
 cd server
 npm install
 cp .env.example .env
-# fill in MONGO_URI, JWT_SECRET, CLIENT_URL, PORT, CLOUDINARY_*, BOOTSTRAP_SECRET
+# fill in MONGO_URI, JWT_SECRET, CLIENT_URL, SERVER_URL, PORT, CLOUDINARY_*, BOOTSTRAP_SECRET
+# fill in GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET for Google OAuth
 npm run dev
 ```
 

@@ -2,6 +2,10 @@
 
 Group matching platform for UC Riverside students. Students register with their UCR email and a course-specific sign-up code, build a profile with their major, skills, and working style, and swipe through other enrolled students in the same class. Mutual right-swipes create a match, opening a real-time chat thread and a Group Space. Admins manage courses and view platform analytics.
 
+## Live App
+
+https://humorous-transformation-production.up.railway.app
+
 ## Demo Video
 
 https://www.youtube.com/watch?v=R5SqMZJTD9I
@@ -158,10 +162,30 @@ curl -X POST http://localhost:5000/api/admin/bootstrap \
   -d '{"email":"your@ucr.edu","secret":"YOUR_BOOTSTRAP_SECRET"}'
 ```
 
+## Features
+
+- **UCR Email Registration** — validates `@ucr.edu` email and requires a course-specific sign-up code
+- **Google OAuth 2.0** — sign in with Google via Passport.js; links to existing accounts by email
+- **Profile Builder** — major, year, bio, skill tags, working style preferences, group size preference, profile photo upload
+- **Swipe Matching** — swipe queue filtered by shared course; mutual likes auto-create a match
+- **Real-time Chat** — Socket.io rooms per match with persistent message history replayed on reconnect
+- **Group Space** — create, join, view, edit, and leave groups within a shared course; shared links and member list
+- **Admin Dashboard** — course creation with auto-generated sign-up codes, user management, match rate and analytics
+- **Photo Upload** — profile photos stored via Multer + Cloudinary
+
 ## Team
 
-| Name | Role |
+| Name | Contributions |
 |---|---|
-| Mari Ozuna Garcia | Backend — Mongoose schemas, auth endpoints, JWT, admin API |
-| Courtney Songco | Frontend — React pages, swipe UI, chat UI, auth forms, GroupSpace, Admin Dashboard|
-| Abby Allers | Server — Express setup, Socket.io, deployment, API wiring |
+| Mari Ozuna Garcia | Backend — Mongoose schemas, auth endpoints (JWT + Google OAuth), admin API, Google OAuth 2.0 integration with Passport.js, deployment configuration |
+| Courtney Songco | Frontend — React pages, swipe UI, chat UI, auth forms, GroupSpace page, Admin Dashboard |
+| Abby Allers | Server infrastructure — Express setup, Socket.io real-time chat, Railway deployment, API wiring |
+
+## AI Usage
+
+We used AI assistance (Claude) in several areas throughout the project:
+
+- **Debugging** — used extensively for tracking down bugs on both the frontend and backend, including issues with React state, API response handling, and Mongoose query errors
+- **Google OAuth setup** — used to help configure Passport.js with the Google OAuth 2.0 strategy, wire up the callback route, and handle the token redirect flow to the frontend
+- **Deployment** — used to troubleshoot Railway deployment failures, identify missing environment variables, and fix redirect URI mismatches in Google Cloud Console
+- **Real-time chat** — used for guidance on structuring Socket.io rooms per match and handling JWT authentication on the socket handshake
